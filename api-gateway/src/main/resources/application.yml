@@ -1,0 +1,44 @@
+server:
+  port: 4004
+
+auth:
+  service:
+    url: ${AUTH_SERVICE_URL}
+
+spring:
+  cloud:
+    gateway:
+      routes:
+
+        # 🔹 Auth Service Route
+        - id: auth-service-route
+          uri: http://auth-service:4005
+          predicates:
+            - Path=/auth/**
+          filters:
+            - StripPrefix=1
+
+        # 🔹 Patient Service Route
+        - id: patient-service-route
+          uri: http://host.docker.internal:4000
+          predicates:
+            - Path=/patients/**
+          filters:
+            - StripPrefix=1
+            - JwtValidation
+
+        # 🔹 Patient Service API Docs
+        - id: api-docs-patient-service
+          uri: http://host.docker.internal:4000
+          predicates:
+            - Path=/api-docs/patients
+          filters:
+            - RewritePath=/api-docs/patients, /v3/api-docs
+
+        # 🔹 Auth Service API Docs
+        - id: api-docs-auth-route
+          uri: http://auth-service:4005
+          predicates:
+            - Path=/api-docs/auth
+          filters:
+            - RewritePath=/api-docs/auth, /v3/api-docs

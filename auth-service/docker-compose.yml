@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  auth-service-db:
+    image: postgres:latest
+    container_name: auth-service-db
+    environment:
+      POSTGRES_DB: auth_service_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+    ports:
+      - "5001:5432"
+    volumes:
+      - auth-service-db-data:/var/lib/postgresql
+    networks:
+      - shared-network
+
+  auth-service:
+    build: .
+    container_name: auth-service
+    ports:
+      - "4005:4005"
+    depends_on:
+      - auth-service-db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://auth-service-db:5432/auth_service_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: root
+      JWT_SECRET: 87FNI484RCRNGFWIERYBF2CB3qsbnwYGsuihdwjwcnuixhg4fc2gc3kjrbHZBTWYSGgTVGFYRCFXEWFXDUT
+    networks:
+      - shared-network
+
+volumes:
+  auth-service-db-data:
+
+networks:
+  shared-network:
+    driver: bridge
+    external: true

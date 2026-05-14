@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  api-gateway:
+    build: .
+    container_name: api-gateway
+    ports:
+      - "4004:4004"
+    networks:
+      - shared-network
+
+networks:
+  shared-network:
+    external: true

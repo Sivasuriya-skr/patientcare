@@ -1,0 +1,2 @@
+ GET http://localhost:4004/auth/validate
+ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZXd1c2VyQHRlc3QuY29tIiwicm9sZSI6IlBBVElFTlQiLCJpYXQiOjE3NzY3MTQ1MTYsImV4cCI6MTc3Njc1MDUxNn0.rn4e2kOUogier-rbs1tW3o-h3A65RXYVQOxyZooJuFlVKUe5f63WLckLU-4PtcxmsZOGcKPqgvMDIn2LNYZ6Hw
