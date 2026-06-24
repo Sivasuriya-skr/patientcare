@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  auth-service-db:
+    image: postgres:17
+    container_name: auth-service-db
+    environment:
+      POSTGRES_USER: postgres1
+      POSTGRES_PASSWORD: postgres@1
+      POSTGRES_DB: auth-service-db
+    ports:
+      - "5432:5432"
+
+  patient-service-db:
+    image: postgres:17
+    container_name: patient-service-db
+    environment:
+      POSTGRES_USER: postgres1
+      POSTGRES_PASSWORD: postgres@1
+      POSTGRES_DB: patient-service-db
+    ports:
+      - "5433:5432"
+
+  localstack:
+    image: localstack/localstack:3.0.0
+    container_name: localstack
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=ec2,ecs,cloudformation,logs,iam,sts
+      - DEBUG=1
