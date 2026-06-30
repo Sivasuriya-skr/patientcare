@@ -1,0 +1,9 @@
+### Admin Registration
+POST http://localhost:4004/auth/register
+Content-Type: application/json
+
+{
+  "name": "Admin User",
+  "email": "admin@test.com",
+  "password": "test1234"
+}

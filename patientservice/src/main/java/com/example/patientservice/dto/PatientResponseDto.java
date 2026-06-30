@@ -1,40 +1,13 @@
 package com.example.patientservice.dto;
 
+import lombok.Data;
+
+// ✅ BATCH 2 FIX: @Data replaces ~35 lines of manual getters/setters
+@Data
 public class PatientResponseDto {
     private String id;
     private String name;
     private String email;
     private String address;
-    private String date_Of_Birth;
-    public String getId() {
-        return id;
-    }
-    public void setId(String id) {
-        this.id = id;
-    }
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-    public String getEmail() {
-        return email;
-    }
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    public String getAddress() {
-        return address;
-    }
-    public void setAddress(String address) {
-        this.address = address;
-    }
-    public String getDate_Of_Birth() {
-        return date_Of_Birth;
-    }
-    public void setDate_Of_Birth(String date_Of_Birth) {
-        this.date_Of_Birth = date_Of_Birth;
-    }
-   
+    private String dateOfBirth;  // ✅ Renamed from date_Of_Birth → camelCase convention
 }

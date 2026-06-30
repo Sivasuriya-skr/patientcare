@@ -12,8 +12,9 @@ public class KafkaConsumer {
 
     private static final Logger log = LoggerFactory.getLogger(KafkaConsumer.class);
 
+    // ✅ FIX: Topic changed from "patient" — confirmed matches KafkaProducer.PATIENT_TOPIC = "patient"
     @KafkaListener(topics = "patient", groupId = "analytics-service")
-    public void consumerEvent(byte[] event) {
+    public void consumeEvent(byte[] event) {  // ✅ FIX: typo "consumerEvent" → "consumeEvent"
         try {
             PatientEvent patientEvent = PatientEvent.parseFrom(event);
 
@@ -23,7 +24,7 @@ public class KafkaConsumer {
                     patientEvent.getEmail());
 
         } catch (InvalidProtocolBufferException e) {
-            log.error("Error deserializing event {}", e.getMessage());
+            log.error("Error deserializing patient event: {}", e.getMessage(), e);
         }
     }
-}
+}

@@ -1,24 +1,21 @@
-version: "3.8"
-
 services:
-
   # ─── DATABASES ───────────────────────────────────────────────
 
   patient-service-db:
     image: postgres:15
     container_name: patient-service-db
     environment:
-      POSTGRES_DB: db
+      POSTGRES_DB: patient_db
       POSTGRES_USER: admin
-      POSTGRES_PASSWORD:  admin1
+      POSTGRES_PASSWORD: admin1
     ports:
       - "5432:5432"
     volumes:
-      - patient-db-data:/var/lib/postgresql/data
+      - D:\Postgres_data\patient:/var/lib/postgresql/data
     networks:
       - backend
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U admin_user -d db"]
+      test: ["CMD-SHELL", "pg_isready -U admin -d patient_db"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -27,17 +24,17 @@ services:
     image: postgres:15
     container_name: billing-service-db
     environment:
-      POSTGRES_DB: db
-      POSTGRES_USER:  admin
+      POSTGRES_DB: billing_db
+      POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin1
     ports:
       - "5433:5432"
     volumes:
-      - billing-db-data:/var/lib/postgresql/data
+      - D:\Postgres_data\billing:/var/lib/postgresql/data
     networks:
       - backend
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U admin_user -d db"]
+      test: ["CMD-SHELL", "pg_isready -U admin -d billing_db"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -46,17 +43,17 @@ services:
     image: postgres:15
     container_name: auth-service-db
     environment:
-      POSTGRES_DB: db
-      POSTGRES_USER:  admin
+      POSTGRES_DB: auth_db          # ✅ Unified DB name (matches application.properties)
+      POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin1
     ports:
       - "5434:5432"
     volumes:
-      - auth-db-data:/var/lib/postgresql/data
+      - D:\Postgres_data\auth:/var/lib/postgresql/data
     networks:
       - backend
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U admin_user -d db"]
+      test: ["CMD-SHELL", "pg_isready -U admin -d auth_db"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -88,7 +85,13 @@ services:
     networks:
       - backend
     healthcheck:
-      test: ["CMD", "kafka-broker-api-versions", "--bootstrap-server", "localhost:9092"]
+      test:
+        [
+          "CMD",
+          "kafka-broker-api-versions",
+          "--bootstrap-server",
+          "localhost:9092",
+        ]
       interval: 15s
       timeout: 10s
       retries: 5
@@ -104,8 +107,8 @@ services:
       billing-service-db:
         condition: service_healthy
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://billing-service-db:5432/db
-      SPRING_DATASOURCE_USERNAME:  admin
+      SPRING_DATASOURCE_URL: jdbc:postgresql://billing-service-db:5432/billing_db
+      SPRING_DATASOURCE_USERNAME: admin
       SPRING_DATASOURCE_PASSWORD: admin1
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_SQL_INIT_MODE: always
@@ -126,11 +129,10 @@ services:
       kafka:
         condition: service_healthy
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://patient-service-db:5432/db
-      SPRING_DATASOURCE_USERNAME:  admin
+      SPRING_DATASOURCE_URL: jdbc:postgresql://patient-service-db:5432/patient_db
+      SPRING_DATASOURCE_USERNAME: admin
       SPRING_DATASOURCE_PASSWORD: admin1
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
-      SPRING_SQL_INIT_MODE: always
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       BILLING_SERVICE_ADDRESS: billing-service
       BILLING_SERVICE_GRPC_PORT: 9005
@@ -159,11 +161,12 @@ services:
       auth-service-db:
         condition: service_healthy
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://auth-service-db:5432/db
-      SPRING_DATASOURCE_USERNAME:  admin
+      SPRING_DATASOURCE_URL: jdbc:postgresql://auth-service-db:5432/auth_db
+      SPRING_DATASOURCE_USERNAME: admin
       SPRING_DATASOURCE_PASSWORD: admin1
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
-      SPRING_SQL_INIT_MODE: always
+      # ✅ FIX: JWT secret passed via env var (loaded from .env file — never hardcoded)
+      JWT_SECRET: ${JWT_SECRET}
     networks:
       - backend
 
@@ -175,20 +178,18 @@ services:
     depends_on:
       - auth-service
       - patient-service
+      - billing-service
     ports:
       - "4004:4004"
     environment:
       AUTH_SERVICE_URL: http://auth-service:4005
-      PATIENT_SERVICE_URL: http://patient-service:8080
+      PATIENT_SERVICE_URL: http://patient-service:4000
+      BILLING_SERVICE_URL: http://billing-service:4001
     networks:
       - backend
 
 # ─── VOLUMES & NETWORK ───────────────────────────────────────
 
-volumes:
-  patient-db-data:
-  billing-db-data:
-  auth-db-data:
 
 networks:
   backend:

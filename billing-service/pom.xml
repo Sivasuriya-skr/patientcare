@@ -36,6 +36,26 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <!-- ✅ BATCH 3 FIX: Added JPA so billing accounts can be persisted to DB -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <!-- ✅ BATCH 3 FIX: PostgreSQL driver for billing DB -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- ✅ BATCH 3 FIX: Lombok for cleaner entity code -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
         <!-- Fixed: spring-boot-starter-webmvc-test → spring-boot-starter-test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

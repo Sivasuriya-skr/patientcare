@@ -1,0 +1,110 @@
+/* ============================================
+   DESIGN TOKENS — PATIENT MANAGEMENT SYSTEM
+   All colors, spacing, fonts defined here.
+   Import this file in global.css only.
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  /* ── Primary Colors ── */
+  --color-primary:        #2563EB;
+  --color-primary-dark:   #1D4ED8;
+  --color-primary-darker: #1E3A8A;
+  --color-primary-light:  #DBEAFE;
+  --color-primary-lighter:#EFF6FF;
+
+  /* ── Status Colors ── */
+  --color-success:        #10B981;
+  --color-success-light:  #DCFCE7;
+  --color-success-dark:   #059669;
+
+  --color-danger:         #EF4444;
+  --color-danger-light:   #FEE2E2;
+  --color-danger-dark:    #DC2626;
+
+  --color-warning:        #F97316;
+  --color-warning-light:  #FED7AA;
+  --color-warning-dark:   #EA580C;
+
+  --color-purple:         #9333EA;
+  --color-purple-light:   #E9D5FF;
+
+  /* ── Neutral Colors ── */
+  --color-white:          #FFFFFF;
+  --color-bg:             #F9FAFB;
+  --color-border:         #E5E7EB;
+  --color-text-muted:     #9CA3AF;
+  --color-text-secondary: #6B7280;
+  --color-text:           #374151;
+  --color-text-dark:      #111827;
+
+  /* ── Dark Mode Colors ── */
+  --color-dark-bg:        #111827;
+  --color-dark-card:      #1F2937;
+  --color-dark-border:    #374151;
+  --color-dark-text:      #F3F4F6;
+  --color-dark-muted:     #9CA3AF;
+
+  /* ── Sidebar ── */
+  --sidebar-width:        240px;
+  --sidebar-collapsed:    72px;
+  --navbar-height:        64px;
+
+  /* ── Spacing Scale ── */
+  --space-1:   4px;
+  --space-2:   8px;
+  --space-3:   12px;
+  --space-4:   16px;
+  --space-5:   20px;
+  --space-6:   24px;
+  --space-8:   32px;
+  --space-10:  40px;
+  --space-12:  48px;
+  --space-16:  64px;
+
+  /* ── Border Radius ── */
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-xl:   16px;
+  --radius-full: 9999px;
+
+  /* ── Shadows ── */
+  --shadow-sm:  0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md:  0 4px 12px rgba(0,0,0,0.08);
+  --shadow-lg:  0 10px 40px rgba(0,0,0,0.12);
+  --shadow-xl:  0 20px 60px rgba(0,0,0,0.15);
+
+  /* ── Typography ── */
+  --font-family:     'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-size-xs:    12px;
+  --font-size-sm:    14px;
+  --font-size-md:    16px;
+  --font-size-lg:    18px;
+  --font-size-xl:    24px;
+  --font-size-2xl:   28px;
+  --font-size-3xl:   32px;
+  --font-size-4xl:   40px;
+
+  --font-weight-regular:   400;
+  --font-weight-medium:    500;
+  --font-weight-semibold:  600;
+  --font-weight-bold:      700;
+  --font-weight-extrabold: 800;
+
+  --line-height-tight:  1.2;
+  --line-height-snug:   1.4;
+  --line-height-normal: 1.5;
+
+  /* ── Transitions ── */
+  --transition-fast:   all 150ms ease;
+  --transition-normal: all 200ms ease;
+  --transition-slow:   all 300ms ease;
+
+  /* ── Z-Index ── */
+  --z-sidebar:  100;
+  --z-navbar:   200;
+  --z-modal:    300;
+  --z-toast:    400;
+}

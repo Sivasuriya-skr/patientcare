@@ -1,0 +1,26 @@
+/* ── Layout Component ── */
+
+.layout {
+  display: flex;
+  min-height: 100vh;
+  background: var(--color-bg);
+}
+
+.layout__content {
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  margin-top: var(--navbar-height);
+  min-height: calc(100vh - var(--navbar-height));
+  transition: margin-left 250ms ease;
+  overflow-x: hidden;
+}
+
+.layout__content--collapsed {
+  margin-left: var(--sidebar-collapsed);
+}
+
+@media (max-width: 768px) {
+  .layout__content {
+    margin-left: 0 !important;
+  }
+}

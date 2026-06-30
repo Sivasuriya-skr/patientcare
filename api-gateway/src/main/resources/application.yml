@@ -8,30 +8,73 @@ auth:
 spring:
   cloud:
     gateway:
+      # ── Global CORS — allow the React frontend ──────────────────
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:5173"
+              - "http://localhost:5174"
+              - "http://localhost:4173"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+              - PATCH
+            allowedHeaders:
+              - "*"
+            exposedHeaders:
+              - "Authorization"
+            allowCredentials: true
+            maxAge: 3600
+
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_LAST
+
       routes:
         - id: auth-service-route
-          uri: http://auth-service:4005
+          uri: ${AUTH_SERVICE_URL:http://auth-service:4005}
           predicates:
             - Path=/auth/**
           filters:
             - StripPrefix=1
 
         - id: patient-service-route
-          uri: http://patient-service:4000
+          uri: ${PATIENT_SERVICE_URL:http://patient-service:4000}
           predicates:
             - Path=/patients/**
           filters:
             - JwtValidation
 
+        - id: patient-service-api-route
+          uri: ${PATIENT_SERVICE_URL:http://patient-service:4000}
+          predicates:
+            - Path=/api/patients/**
+          filters:
+            - JwtValidation
+            - RewritePath=/api/patients/(?<remaining>.*), /patients/${remaining}
+            - RewritePath=/api/patients, /patients
+
+        - id: billing-service-route
+          uri: ${BILLING_SERVICE_URL:http://billing-service:4001}
+          predicates:
+            - Path=/api/billing/**
+          filters:
+            - JwtValidation
+            - RewritePath=/api/billing/(?<remaining>.*), /billing/${remaining}
+            - RewritePath=/api/billing, /billing
+
         - id: api-docs-patient-service
-          uri: http://patient-service:4000
+          uri: ${PATIENT_SERVICE_URL:http://patient-service:4000}
           predicates:
             - Path=/api-docs/patients
           filters:
             - RewritePath=/api-docs/patients, /v3/api-docs
 
         - id: api-docs-auth-route
-          uri: http://auth-service:4005
+          uri: ${AUTH_SERVICE_URL:http://auth-service:4005}
           predicates:
             - Path=/api-docs/auth
           filters:

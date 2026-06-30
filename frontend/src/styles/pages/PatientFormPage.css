@@ -1,0 +1,108 @@
+/* ── Patient Form Page ── */
+
+.patient-form-page { padding: var(--space-6); max-width: 1400px; }
+
+.form-page-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  transition: var(--transition-fast);
+}
+.back-btn:hover { background: var(--color-primary-light); }
+
+.form-card {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.form-card__header {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+  padding: var(--space-8);
+  color: white;
+}
+
+.form-card__title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--space-2);
+  color: white;
+}
+
+.form-card__subtitle {
+  font-size: var(--font-size-sm);
+  color: rgba(255,255,255,0.8);
+}
+
+.form-card__body {
+  padding: var(--space-8);
+}
+
+/* ─── Form Sections ─── */
+.form-section {
+  margin-bottom: var(--space-8);
+}
+
+.form-section:last-child { margin-bottom: 0; }
+
+.form-section__title {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-dark);
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-3);
+  border-bottom: 2px solid var(--color-primary-light);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.form-section__icon {
+  color: var(--color-primary);
+}
+
+.form-section__fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* ─── Form Footer ─── */
+.form-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  padding: var(--space-5) var(--space-8);
+  background: var(--color-bg);
+  border-top: 1px solid var(--color-border);
+}
+
+@media (max-width: 640px) {
+  .form-card__body   { padding: var(--space-5); }
+  .form-card__header { padding: var(--space-5); }
+  .form-card__footer {
+    flex-direction: column;
+    padding: var(--space-4);
+  }
+  .form-card__footer .btn { width: 100%; }
+}

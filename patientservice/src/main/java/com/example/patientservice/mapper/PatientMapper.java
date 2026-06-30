@@ -15,8 +15,8 @@ public class PatientMapper {
         patientDto.setName(patient.getName());
         patientDto.setAddress(patient.getAddress());
         patientDto.setEmail(patient.getEmail());
-        patientDto.setDate_Of_Birth(patient.getDateOfBirth().toString());
-        // ✅ REMOVED registeredDate line
+        // ✅ Updated: field renamed from date_Of_Birth → dateOfBirth (camelCase)
+        patientDto.setDateOfBirth(patient.getDateOfBirth().toString());
 
         return patientDto;
     }

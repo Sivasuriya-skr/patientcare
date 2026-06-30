@@ -1,0 +1,27 @@
+# ============================================================
+# Root .gitignore — Patient Management Microservices
+# ============================================================
+
+# Secrets — NEVER commit these
+.env
+*.env
+.env.local
+.env.production
+
+# Maven build output
+**/target/
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/

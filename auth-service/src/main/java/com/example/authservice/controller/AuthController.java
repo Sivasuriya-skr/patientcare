@@ -2,12 +2,15 @@ package com.example.authservice.controller;
 
 import com.example.authservice.dto.LoginRequestDTO;
 import com.example.authservice.dto.LoginResponseDTO;
+import com.example.authservice.dto.RegisterRequestDTO;
+import com.example.authservice.dto.UserResponseDTO;
+import com.example.authservice.model.User;
 import com.example.authservice.service.AuthService;
+import com.example.authservice.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -16,11 +19,27 @@ import java.util.Optional;
 public class AuthController {
 
     private final AuthService authService;
-    private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
 
-    public AuthController(AuthService authService, PasswordEncoder passwordEncoder) {
+    // ✅ BATCH 2 FIX: Removed unused PasswordEncoder — encoding belongs in AuthService, not the controller
+    public AuthController(AuthService authService, UserService userService) {
         this.authService = authService;
-        this.passwordEncoder = passwordEncoder;
+        this.userService = userService;
+    }
+
+    @Operation(summary = "Register a new admin user")
+    @PostMapping("/register")
+    public ResponseEntity<UserResponseDTO> register(
+            @Valid @RequestBody RegisterRequestDTO registerRequestDTO
+    ) {
+        User registeredUser = userService.registerUser(registerRequestDTO);
+        UserResponseDTO response = new UserResponseDTO(
+                registeredUser.getId(),
+                registeredUser.getEmail(),
+                registeredUser.getName(),
+                registeredUser.getRole()
+        );
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @Operation(summary = "Generate token on the user login")
@@ -52,5 +71,7 @@ public class AuthController {
                 ?ResponseEntity.ok().build()
                 :ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
+
+  
 
 }

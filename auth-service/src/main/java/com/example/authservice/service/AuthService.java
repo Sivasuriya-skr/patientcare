@@ -37,6 +37,7 @@ public class AuthService {
             jwtUtil.validateToken(token);
             return true;
         } catch (JwtException e){
+            System.err.println("JWT validation failed: " + e.getMessage());
             return false;
         }
     }

@@ -1,6 +1,7 @@
 package com.example.patientservice.kafka;
 
 import com.example.patientservice.model.Patient;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -10,25 +11,32 @@ import patient_event.PatientEvent;
 @Service
 public class KafkaProducer {
 
-    private final KafkaTemplate<String,byte[]> kafkaTemplate;
+    public static final String PATIENT_TOPIC = "patient";
 
-    public KafkaProducer(KafkaTemplate<String,byte[]> kafkaTemplate)
-    {
-        this.kafkaTemplate=kafkaTemplate;
+    // ✅ FIXED: Changed from byte[] to String
+    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final ObjectMapper objectMapper;
+
+    public KafkaProducer(KafkaTemplate<String, String> kafkaTemplate, ObjectMapper objectMapper) {
+        this.kafkaTemplate = kafkaTemplate;
+        this.objectMapper = objectMapper;
     }
 
-    public void sendEvent (Patient patient)
-    {
-        PatientEvent event = PatientEvent.newBuilder().setPatientId(patient.getId().toString())
+    public void sendEvent(Patient patient) {
+        PatientEvent event = PatientEvent.newBuilder()
+                .setPatientId(patient.getId().toString())
                 .setName(patient.getName())
                 .setEmail(patient.getEmail())
-                .setEventTyp("Event Created")
+                .setEventTyp("PATIENT_CREATED")
                 .build();
 
         try {
-        kafkaTemplate.send("Patient",event.toByteArray());
+            // ✅ FIXED: Convert protobuf to JSON String instead of byte array
+            String jsonEvent = objectMapper.writeValueAsString(event.toBuilder().build());
+            kafkaTemplate.send(PATIENT_TOPIC, jsonEvent);
+            log.info("Patient event sent successfully for patientId={}", patient.getId());
         } catch (Exception e) {
-            log.info("error sending patientCreated:{}",event);
+            log.error("Error sending patient event for patientId={}: {}", patient.getId(), e.getMessage(), e);
         }
     }
 }
